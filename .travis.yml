@@ -1,0 +1,11 @@
+language: php
+
+sudo: false
+
+git:
+    depth: 1
+
+matrix:
+    fast_finish: true
+        - php: 7.0
+        - php: 7.1

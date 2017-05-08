@@ -1,0 +1,31 @@
+{
+    "name": "holokron/json-patch",
+    "version": "0.1.0",
+    "type": "library",
+    "license": "MIT",
+    "description": "Library to handle JSON patch requests compatibile with RFC 6902",
+    "keywords": [
+        "json",
+        "json-patch",
+        "rfc6902"
+    ],
+    "authors": [
+        {
+            "name": "Michal Teczynski",
+            "email": "michal.teczynski@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "require-dev": {        
+        "phpunit/phpunit": ">=6.0",
+        "friendsofphp/php-cs-fixer": "~2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Holokron\JsonPatch\\JsonPatch\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
