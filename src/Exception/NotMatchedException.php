@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Holokron\JsonPatch\Exception;
 
-use Holokron\JsonPatch\Operation;
+use Holokron\JsonPatch\Patch;
 
 class NotMatchedException extends \RuntimeException
 {
     /**
-     * @var Operation
+     * @var Patch
      */
-    private $operation;
+    private $patch;
 
-    public function __construct(Operation $operation)
+    public function __construct(Patch $patch)
     {
-        parent::__construct("Not matched operation at path: {$operation->getPath()}.");
-        $this->operation = $operation;
+        parent::__construct("Not matched operation at path: {$patch->getPath()}.");
+        $this->patch = $patch;
     }
 
-    public function getOperation(): Operation
+    public function getPatch(): Patch
     {
-        return $this->operation;
+        return $this->patch;
     }
 }

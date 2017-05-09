@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Holokron\JsonPatch\Definition;
 
-use Holokron\JsonPatch\Exception\UndefinedOpException;
 use Holokron\JsonPatch\Exception\IllegalPathCharactersException;
+use Holokron\JsonPatch\Exception\InvalidRequirementNameException;
+use Holokron\JsonPatch\Exception\UndefinedOpException;
 
 class Definition
 {
+    const PATH_REQUIREMENT_ALLOWED_CHARACTERS = '[\d\w\_]';
+
     /**
      * @var string
      */
@@ -77,21 +80,29 @@ class Definition
         return $this->getCallback;
     }
 
-    public function addRequirements(string $key, string $regex): self
+    public function addRequirements(array $requirements): self
     {
-        foreach($requirements as $key => $regex) {
+        foreach ($requirements as $key => $regex) {
+            if (is_int($key[0])) {
+                throw new InvalidRequirementNameException('Beginning of requirement name cannot be integer.');
+            }
+
+            if (!preg_match('/^{static::PATH_REQUIREMENT_ALLOWED_CHARACTERS}$/', $key)) {
+                throw new InvalidRequirementNameException('Requirement name consist illegal characters.');
+            }
+
             $this->requirements[$key] = $this->sanitizeRequirement($key, $regex);
         }
         $this->compiled = null;
 
-        return $this;        
+        return $this;
     }
 
     public function compile(): CompiledDefinition
     {
         if (null === $this->compiled) {
             $this->compiled = Compiler::compile($this);
-        }        
+        }
 
         return $this->compiled;
     }
@@ -113,7 +124,7 @@ class Definition
 
     private static function validate(string $op, string $path)
     {
-        if (!in_array($op, ['add', 'remove', 'replace', 'move', 'copy', 'test'])) {
+        if (!in_array($op, ['add', 'remove', 'replace', 'move', 'copy', 'test'], true)) {
             throw new UndefinedOpException($op);
         }
 

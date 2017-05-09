@@ -2,54 +2,87 @@
 
 declare(strict_types=1);
 
+namespace Holokron\JsonPatch;
+
 class Patch
 {
     /**
-     * @var ParserInterface
+     * List of valid operation types according to RFC 6902.
      */
-    private $parser;
+    const ADD = 'add';
+    const REMOVE = 'remove';
+    const REPLACE = 'replace';
+    const MOVE = 'move';
+    const COPY = 'copy';
+    const TEST = 'test';
 
     /**
-     * @var MatcherInterface
+     * @var string
      */
-    private $matcher;
+    private $op;
 
     /**
-     * @var Validator
+     * @var string
      */
-    private $operationValidator;
+    private $path;
 
     /**
-     * @var OperationFactory
+     * @var mixed
      */
-    private $operationFactory;
+    private $value;
 
     /**
-     * @param string $json JSON string with operations to apply
+     * @var null|string
      */
-    public function apply(string $json, $subject = null)  
+    private $from;
+
+    public function __construct(string $op, string $path, $value = null, $from = null)
     {
-        $patch = $this->parser->parse($json);
-        if (empty($patch)) {
-            return;
-        }
-
-        foreach($patch as $patchOperation) {
-            $this->validator->validate($operation);
-            $operation = $this->operationFactory->create($patchOperation);
-            $definition = $this->matcher->match($operation);
-            $this->executeOperation($operation, $definition, $subject);
-        }
+        $this->op = $op;
+        $this->path = $path;
+        $this->value = $value;
+        $this->from = $from;
     }
 
-    private function executeOperation(DefinitionInterface $definition, OperationInterface $operation, $subject = null)
+    /**
+     * @return string Path of patch
+     */
+    public function getPath(): string
     {
-        $args = $this->paramsConverter->convert($definition->compileParams($operation));
-        
-        if (null !== $subject) {
-            array_unshift($args, $subject);
-        }
+        return $this->path;
+    }
 
-        call_user_func_array($definition->getCallback(), $args);       
+    /**
+     * @return string Type of operation which will be applied
+     */
+    public function getOp(): string
+    {
+        return $this->op;
+    }
+
+    /**
+     * @return mixed Optional value of patch
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * @return string Path from to copy value to path in case of Patch::COPY operation
+     */
+    public function getFrom()
+    {
+        return $this->from;
+    }
+
+    public static function create(array $patch): Patch
+    {
+        return new static(
+            $patch['op'],
+            $patch['path'],
+            $patch['value'] ?? null,
+            $patch['from'] ?? null
+        );
     }
 }

@@ -31,16 +31,15 @@ class DefinitionsCollection implements \IteratorAggregate, \Countable
     public function addPrefix(string $prefix, array $requirements = []): self
     {
         $prefix = trim(trim($prefix), '/');
-        
+
         if ('' === $prefix) {
             return $this;
         }
 
-        foreach($this->definitions as $definition) {
+        foreach ($this->definitions as $definition) {
             $definition
                 ->setPath("/$prefix{$route->getPath()}")
-                ->addRequirements($requirements)
-                ;
+                ->addRequirements($requirements);
         }
 
         return $this;

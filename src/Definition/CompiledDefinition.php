@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Holokron\JsonPatch\Definition;
 
-class CompiledDefinition 
+class CompiledDefinition
 {
     /**
      * @var string
@@ -17,9 +17,9 @@ class CompiledDefinition
     private $regex;
 
     /**
-     * @var string
+     * @var bool
      */
-    private $staticPrefix;
+    private $staticPath;
 
     /**
      * @var callable
@@ -31,11 +31,11 @@ class CompiledDefinition
      */
     private $requirements = [];
 
-    public function __construct(string $op, string $regex, string $staticPrefix, callable $callback, array $requirements = [])
+    public function __construct(string $op, string $regex, bool $staticPath, callable $callback, array $requirements = [])
     {
         $this->op = $op;
         $this->regex = $regex;
-        $this->staticPrefix = $staticPrefix;
+        $this->staticPath = $staticPath;
         $this->callback = $callback;
         $this->requirements = $requirements;
     }
@@ -43,16 +43,16 @@ class CompiledDefinition
     public function getOp(): string
     {
         return $this->op;
-    }    
+    }
 
     public function getRegex(): string
     {
         return $this->regex;
     }
 
-    public function getStaticPrefix(): string
+    public function isPathStatic(): bool
     {
-        return $this->staticPrefix;
+        return $this->staticPath;
     }
 
     public function getCallback(): callable

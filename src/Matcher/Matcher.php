@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Holokron\JsonPatch\Matcher;
 
-use Holokron\JsonPatch\Operation;
 use Holokron\JsonPatch\Definition\DefinitionsCollection;
-use Holokron\JsonPatch\Definition\MatchedDefinition;
 use Holokron\JsonPatch\Exception\NotMatchedException;
+use Holokron\JsonPatch\Patch;
 
 class Matcher implements MatcherInterface
 {
@@ -22,26 +21,29 @@ class Matcher implements MatcherInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function match(Operation $operation): MatchedDefinition
+    public function match(Patch $patch): array
     {
         /* @var @definition Definition */
-        foreach($this->definitions as $name => $definition) {
-            if ($operation->getOp() !== $definition->getOp()) {
+        foreach ($this->definitions as $name => $definition) {
+            if ($patch->getOp() !== $definition->getOp()) {
                 continue;
             }
             $compiledDef = $definition->compile();
+            if ($compiledDef->isPathStatic() && $patch->getPath() === $compiledDef->getPath()) {
+                return [$compiledDef->getCallback(), []];
+            }
 
-            if (!preg_match($compiledDef->getRegex(), $operation->getPath(), $params)) {
+            if (!preg_match($compiledDef->getRegex(), $patch->getPath(), $params)) {
                 continue;
             }
 
             array_shift($params);
 
-            return new MatchedDefinition($compiledDef->getCallback(), $params);
+            return [$compiledDef->getCallback(), $params];
         }
 
-        throw new NotMatchedException($operation);
+        throw new NotMatchedException($patch);
     }
 }

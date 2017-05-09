@@ -24,7 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Holokron\JsonPatch\\JsonPatch\\": "src/"
+            "Holokron\\JsonPatch\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Holokron\\Tests\\JsonPatch\\": "tests/"
         }
     },
     "minimum-stability": "dev"

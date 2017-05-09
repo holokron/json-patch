@@ -18,9 +18,9 @@ class Compiler
     {
         $requirements = $this->orderRequirements($definition->getRequirements());
         $search = array_merge(
-            [static::PATH_DELIMITER], 
+            [static::PATH_DELIMITER],
             array_map(
-                function(string $key) {
+                function (string $key) {
                     return static::PATH_REQUIREMENT_START . $key . static::PATH_REQUIREMENT_END;
                 },
                 array_keys($requirements)
@@ -29,7 +29,7 @@ class Compiler
         $replace = array_merge(
             [static::PATH_DELIMITER_REGEX],
             array_map(
-                function(string $value) {
+                function (string $value) {
                     return "($value)";
                 },
                 array_values($requirements)
@@ -38,10 +38,10 @@ class Compiler
         $regex = '/^' . str_replace($search, $replace, $definition->getPath()) . '$/';
 
         return new CompiledDefinition(
-            $definition->getOp(), 
-            $regex, 
-            $definition->getCallback(), 
-            $this->getStaticPrefix($definition->getPath()),
+            $definition->getOp(),
+            $regex,
+            $definition->getCallback(),
+            $this->isPathStatic($definition->getPath()),
             $requirements
         );
     }
@@ -49,25 +49,20 @@ class Compiler
     private function orderRequirements(string $path, array $requirements): array
     {
         $orderedKeys = [];
-        foreach(array_keys($requirements) as $key) {
+        foreach (array_keys($requirements) as $key) {
             $orderedKeys[$key] = strpos($path, $key);
-        }        
+        }
         asort($orderedKeys);
         $orderedRequirements = [];
-        foreach($orderedKeys as $key => $value) {
+        foreach ($orderedKeys as $key => $value) {
             $orderedRequirements[$key] = $requirements[$key];
         }
 
         return $orderedRequirements;
     }
 
-    private function getStaticPrefix(string $path): string
+    private function isPathStatic(string $path): bool
     {
-        $firstRequirementPosition = strpos($path, static::PATH_REQUIREMENT_START);
-        if (false === $firstRequirementPosition) {
-            return '/';
-        }
-
-        return rtrim(substr($path, 0, $firstRequirementPosition), '/');
+        return false === strpos($path, static::PATH_REQUIREMENT_START);
     }
 }
