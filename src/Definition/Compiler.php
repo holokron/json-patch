@@ -16,7 +16,12 @@ class Compiler
 
     public static function compile(Definition $definition): CompiledDefinition
     {
-        $requirements = $this->orderRequirements($definition->getRequirements());
+        $path = $definition->getPath();
+        $requirements = static::orderRequirements(
+            $path,
+            $definition->getRequirements()
+        );
+
         $search = array_merge(
             [static::PATH_DELIMITER],
             array_map(
@@ -35,18 +40,19 @@ class Compiler
                 array_values($requirements)
             )
         );
-        $regex = '/^' . str_replace($search, $replace, $definition->getPath()) . '$/';
+
+        $regex = '/^' . str_replace($search, $replace, $path) . '$/';
 
         return new CompiledDefinition(
             $definition->getOp(),
             $regex,
+            static::isPathStatic($path),
             $definition->getCallback(),
-            $this->isPathStatic($definition->getPath()),
             $requirements
         );
     }
 
-    private function orderRequirements(string $path, array $requirements): array
+    private static function orderRequirements(string $path, array $requirements): array
     {
         $orderedKeys = [];
         foreach (array_keys($requirements) as $key) {
@@ -61,7 +67,7 @@ class Compiler
         return $orderedRequirements;
     }
 
-    private function isPathStatic(string $path): bool
+    private static function isPathStatic(string $path): bool
     {
         return false === strpos($path, static::PATH_REQUIREMENT_START);
     }

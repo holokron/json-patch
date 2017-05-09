@@ -19,7 +19,7 @@ class CallableExecutorTest extends TestCase
         $this->executor = new CallableExecutor();
     }
 
-    public function testExecuteWithoutSubject()
+    public function testExecuteSubject()
     {
         $foo = 'foo';
         $bar = 123;
@@ -69,6 +69,34 @@ class CallableExecutorTest extends TestCase
             }
         };
         $result = $this->executor->execute([$callback, 'test'], [$foo, $bar], $subject);
+        $this->assertSame('executed', $result);
+    }
+
+    public function testExecuteWithValue()
+    {
+        $foo = 'foo';
+        $bar = 123;
+        $value = new \stdClass();
+        $that = $this;
+        $callback = new class($this, $foo, $bar, $value) {
+            public function __construct(TestCase $testCase, string $foo, int $bar, $value)
+            {
+                $this->testCase = $testCase;
+                $this->foo = $foo;
+                $this->bar = $bar;
+                $this->value = $value;
+            }
+
+            public function test(...$args)
+            {
+                $this->testCase->assertSame($this->value, $args[0]);
+                $this->testCase->assertSame($this->foo, $args[1]);
+                $this->testCase->assertSame($this->bar, $args[2]);
+
+                return 'executed';
+            }
+        };
+        $result = $this->executor->execute([$callback, 'test'], [$foo, $bar], null, $value);
         $this->assertSame('executed', $result);
     }
 }

@@ -77,7 +77,7 @@ class Definition
 
     public function getCallback(): callable
     {
-        return $this->getCallback;
+        return $this->callback;
     }
 
     public function addRequirements(array $requirements): self
@@ -87,11 +87,11 @@ class Definition
                 throw new InvalidRequirementNameException('Beginning of requirement name cannot be integer.');
             }
 
-            if (!preg_match('/^{static::PATH_REQUIREMENT_ALLOWED_CHARACTERS}$/', $key)) {
+            if (!preg_match('/^' . static::PATH_REQUIREMENT_ALLOWED_CHARACTERS . '+$/', $key)) {
                 throw new InvalidRequirementNameException('Requirement name consist illegal characters.');
             }
 
-            $this->requirements[$key] = $this->sanitizeRequirement($key, $regex);
+            $this->requirements[$key] = $this->sanitizeRequirement($regex);
         }
         $this->compiled = null;
 
@@ -109,6 +109,7 @@ class Definition
 
     private function sanitizeRequirement(string $regex): string
     {
+        $sanitized = $regex;
         if ('' !== $regex && '^' === $regex[0]) {
             $sanitized = (string) substr($regex, 1);
         }

@@ -31,9 +31,6 @@ class Matcher implements MatcherInterface
                 continue;
             }
             $compiledDef = $definition->compile();
-            if ($compiledDef->isPathStatic() && $patch->getPath() === $compiledDef->getPath()) {
-                return [$compiledDef->getCallback(), []];
-            }
 
             if (!preg_match($compiledDef->getRegex(), $patch->getPath(), $params)) {
                 continue;

@@ -6,5 +6,5 @@ namespace Holokron\JsonPatch\Executor;
 
 interface ExecutorInterface
 {
-    public function execute(callable $callback, array $params = [], $subject = null);
+    public function execute(callable $callback, array $params = [], $subject = null, $value = null);
 }
