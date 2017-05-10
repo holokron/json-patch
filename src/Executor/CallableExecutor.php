@@ -8,12 +8,12 @@ class CallableExecutor implements ExecutorInterface
 {
     public function execute(callable $callback, array $params = [], $subject = null, $value = null)
     {
-        if (null !== $value) {
-            array_unshift($params, $value);
-        }
-
         if (null !== $subject) {
             array_unshift($params, $subject);
+        }
+
+        if (null !== $value) {
+            $params[] = $value;
         }
 
         return call_user_func_array($callback, $params);
