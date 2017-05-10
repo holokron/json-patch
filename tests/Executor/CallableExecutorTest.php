@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Holokron\Tests\JsonPatch\Executor;
+namespace Holokron\JsonPatch\Tests\Executor;
 
 use Holokron\JsonPatch\Executor\CallableExecutor;
 use PHPUnit\Framework\TestCase;
@@ -89,9 +89,9 @@ class CallableExecutorTest extends TestCase
 
             public function test(...$args)
             {
-                $this->testCase->assertSame($this->value, $args[0]);
-                $this->testCase->assertSame($this->foo, $args[1]);
-                $this->testCase->assertSame($this->bar, $args[2]);
+                $this->testCase->assertSame($this->foo, $args[0]);
+                $this->testCase->assertSame($this->bar, $args[1]);
+                $this->testCase->assertSame($this->value, $args[2]);
 
                 return 'executed';
             }

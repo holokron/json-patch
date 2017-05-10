@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Holokron\Tests\JsonPatch\Parser;
+namespace Holokron\JsonPatch\Tests\Parser;
 
 use Holokron\JsonPatch\Parser\JsonDecodeParser;
 use PHPUnit\Framework\TestCase;
