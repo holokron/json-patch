@@ -7,6 +7,9 @@ namespace Holokron\JsonPatch\Tests\Executor;
 use Holokron\JsonPatch\Executor\CallableExecutor;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @author Michał Tęczyński <michalv8@gmail.com>
+ */
 class CallableExecutorTest extends TestCase
 {
     /**
@@ -19,7 +22,7 @@ class CallableExecutorTest extends TestCase
         $this->executor = new CallableExecutor();
     }
 
-    public function testExecuteSubject()
+    public function testExecute()
     {
         $foo = 'foo';
         $bar = 123;
@@ -32,16 +35,16 @@ class CallableExecutorTest extends TestCase
                 $this->bar = $bar;
             }
 
-            public function test(...$args)
+            public function executed(...$args)
             {
-                $this->testCase->assertSame($this->foo, $args[0]);
-                $this->testCase->assertSame($this->bar, $args[1]);
+                $this->testCase->assertSame($this->foo, $args[0], 'Invalid method argument at position 0');
+                $this->testCase->assertSame($this->bar, $args[1], 'Invalid method argument at position 1');
 
                 return 'executed';
             }
         };
-        $result = $this->executor->execute([$callback, 'test'], [$foo, $bar]);
-        $this->assertSame('executed', $result);
+        $result = $this->executor->execute([$callback, 'executed'], [$foo, $bar]);
+        $this->assertSame('executed', $result, 'Invalid method executed');
     }
 
     public function testExecuteWithSubject()
@@ -59,17 +62,17 @@ class CallableExecutorTest extends TestCase
                 $this->subject = $subject;
             }
 
-            public function test(...$args)
+            public function executeWithSubject(...$args)
             {
-                $this->testCase->assertSame($this->subject, $args[0]);
-                $this->testCase->assertSame($this->foo, $args[1]);
-                $this->testCase->assertSame($this->bar, $args[2]);
+                $this->testCase->assertSame($this->subject, $args[0], 'Invalid subject argument at position 0');
+                $this->testCase->assertSame($this->foo, $args[1], 'Invalid method argument at position 1');
+                $this->testCase->assertSame($this->bar, $args[2], 'Invalid method argument at position 2');
 
-                return 'executed';
+                return 'executeWithSubject';
             }
         };
-        $result = $this->executor->execute([$callback, 'test'], [$foo, $bar], $subject);
-        $this->assertSame('executed', $result);
+        $result = $this->executor->execute([$callback, 'executeWithSubject'], [$foo, $bar], $subject);
+        $this->assertSame('executeWithSubject', $result, 'Invalid method executed');
     }
 
     public function testExecuteWithValue()
@@ -87,16 +90,16 @@ class CallableExecutorTest extends TestCase
                 $this->value = $value;
             }
 
-            public function test(...$args)
+            public function executedExecuteWithValue(...$args)
             {
-                $this->testCase->assertSame($this->foo, $args[0]);
-                $this->testCase->assertSame($this->bar, $args[1]);
-                $this->testCase->assertSame($this->value, $args[2]);
+                $this->testCase->assertSame($this->foo, $args[0], 'Invalid method argument at position 0');
+                $this->testCase->assertSame($this->bar, $args[1], 'Invalid method argument at position 1');
+                $this->testCase->assertSame($this->value, $args[2], 'Invalid value argument at position 2');
 
-                return 'executed';
+                return 'executedExecuteWithValue';
             }
         };
-        $result = $this->executor->execute([$callback, 'test'], [$foo, $bar], null, $value);
-        $this->assertSame('executed', $result);
+        $result = $this->executor->execute([$callback, 'executedExecuteWithValue'], [$foo, $bar], null, $value);
+        $this->assertSame('executedExecuteWithValue', $result, 'Invalid method executed');
     }
 }

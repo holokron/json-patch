@@ -8,6 +8,9 @@ use Holokron\JsonPatch\Exception\IllegalPathCharactersException;
 use Holokron\JsonPatch\Exception\InvalidRequirementNameException;
 use Holokron\JsonPatch\Exception\UndefinedOpException;
 
+/**
+ * @author Michał Tęczyński <michalv8@gmail.com>
+ */
 class Definition
 {
     const PATH_REQUIREMENT_ALLOWED_CHARACTERS = '[\d\w\_]';

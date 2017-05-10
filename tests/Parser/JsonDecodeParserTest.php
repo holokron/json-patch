@@ -7,6 +7,9 @@ namespace Holokron\JsonPatch\Tests\Parser;
 use Holokron\JsonPatch\Parser\JsonDecodeParser;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @author Michał Tęczyński <michalv8@gmail.com>
+ */
 class JsonDecodeParserTest extends TestCase
 {
     /**

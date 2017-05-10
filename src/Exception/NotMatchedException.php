@@ -6,6 +6,9 @@ namespace Holokron\JsonPatch\Exception;
 
 use Holokron\JsonPatch\Patch;
 
+/**
+ * @author Michał Tęczyński <michalv8@gmail.com>
+ */
 class NotMatchedException extends \RuntimeException
 {
     /**

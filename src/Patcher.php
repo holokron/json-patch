@@ -9,6 +9,9 @@ use Holokron\JsonPatch\Executor\ExecutorInterface;
 use Holokron\JsonPatch\Matcher\MatcherInterface;
 use Holokron\JsonPatch\Parser\ParserInterface;
 
+/**
+ * @author Michał Tęczyński <michalv8@gmail.com>
+ */
 class Patcher
 {
     /**
