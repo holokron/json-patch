@@ -25,11 +25,6 @@ class Patcher
     private $matcher;
 
     /**
-     * @var Validator
-     */
-    private $validator;
-
-    /**
      * @var ExecutorInterface
      */
     private $executor;
@@ -61,13 +56,15 @@ class Patcher
             return;
         }
 
-        $operationsToExecute = [];
+        $toExecute = [];
 
-        foreach ($document as $patch) {
-            //$this->validator->validate($patch);
-            $patch = Patch::create($patch);
+        foreach ($document as $jsonPatch) {
+            $patch = Patch::create($jsonPatch);
             try {
-                $matched = $this->matcher->match($patch);
+                $toExecute[] = [
+                    $this->matcher->match($patch),
+                    $patch->getValue(),
+                ];
             } catch (NotMatchedException $e) {
                 if ($ignoreNotMatched) {
                     continue;
@@ -75,14 +72,10 @@ class Patcher
 
                 throw $e;
             }
-            $operationsToExecute[] = [
-                $matched,
-                $patch->getValue(),
-            ];
         }
 
-        foreach ($operationsToExecute as $operation) {
-            $this->executor->execute($operation[0][0], $operation[0][1], $subject, $operation[1]);
+        foreach ($toExecute as $args) {
+            $this->executor->execute($args[0][0], $args[0][1], $subject, $args[1]);
         }
     }
 }

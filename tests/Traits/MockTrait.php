@@ -23,11 +23,32 @@ trait MockTrait
             $args = [$args];
         }
 
+        $expects = $mock
+            ->expects($invoke)
+            ->method($method);
+
+        if (is_callable($return) && null === $args) {
+            $expects->will($this->returnCallback($return));
+        } elseif (is_array($args)) {
+            $expects
+                ->with(...$args)
+                ->willReturn($return);
+        }
+
+        return $this;
+    }
+
+    private function mockMethodConsecutive($mock, string $method, $invoke = null, array $args = [], array $return = [])
+    {
+        if (!$invoke instanceof \PHPUnit_Framework_MockObject_Matcher_InvokedCount) {
+            $invoke = $this->any();
+        }
+
         $mock
             ->expects($invoke)
             ->method($method)
-            ->with(...$args)
-            ->willReturn($return);
+            ->withConsecutive(...$args)
+            ->will($this->onConsecutiveCalls(...$return));
 
         return $this;
     }
