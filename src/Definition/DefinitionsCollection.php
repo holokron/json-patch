@@ -41,7 +41,7 @@ class DefinitionsCollection implements \IteratorAggregate, \Countable
 
         foreach ($this->definitions as $definition) {
             $definition
-                ->setPath("/$prefix{$route->getPath()}")
+                ->setPath("/$prefix{$definition->getPath()}")
                 ->addRequirements($requirements);
         }
 

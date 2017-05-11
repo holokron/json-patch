@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Holokron\JsonPatch\Definition;
 
 use Holokron\JsonPatch\Exception\IllegalPathCharactersException;
+use Holokron\JsonPatch\Exception\InvalidRegexException;
 use Holokron\JsonPatch\Exception\InvalidRequirementNameException;
 use Holokron\JsonPatch\Exception\UndefinedOpException;
 
