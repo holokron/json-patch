@@ -2,9 +2,11 @@ machine:
     php:
         version: 7.0.7
 dependencies:
+    cache_directories:
+        - "~/.composer/cache"
     override:
-        - compose --version
-        - composer install --no-scripts --no-progress
+        - composer --version
+        - composer install --prefer-dist --no-scripts --no-progress
 test:
     override:
         - mkdir -p $CIRCLE_TEST_REPORTS/phpunit
