@@ -42,7 +42,6 @@ class Compiler
         return new CompiledDefinition(
             $definition->getOp(),
             static::generateRegex($path, $requirements),
-            static::isPathStatic($path),
             $definition->getCallback(),
             static::orderRequirements($path, $requirements)
         );
@@ -80,10 +79,5 @@ class Compiler
         }
 
         return '/^' . implode('', $regexParts) . '$/';
-    }
-
-    private static function isPathStatic(string $path): bool
-    {
-        return false === strpos($path, static::REQUIREMENT_START);
     }
 }
