@@ -30,9 +30,12 @@ trait MockTrait
         if (is_callable($return) && null === $args) {
             $expects->will($this->returnCallback($return));
         } elseif (is_array($args)) {
-            $expects
-                ->with(...$args)
-                ->willReturn($return);
+            $expects->with(...$args);
+            if ($return instanceof \Throwable) {
+                $expects->will($this->throwException($return));
+            } else {
+                $expects->willReturn($return);
+            }
         }
 
         return $this;
@@ -43,6 +46,17 @@ trait MockTrait
         if (!$invoke instanceof \PHPUnit_Framework_MockObject_Matcher_InvokedCount) {
             $invoke = $this->any();
         }
+
+        $return = array_map(
+            function ($item) {
+                if (!$item instanceof \Throwable) {
+                    return $item;
+                }
+
+                return $this->throwException($item);
+            },
+            $return
+        );
 
         $mock
             ->expects($invoke)

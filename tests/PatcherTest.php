@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Holokron\JsonPatch\Tests;
 
+use Holokron\JsonPatch\Exception\NotMatchedException;
 use Holokron\JsonPatch\Executor\ExecutorInterface;
 use Holokron\JsonPatch\Matcher\MatcherInterface;
 use Holokron\JsonPatch\Parser\ParserInterface;
@@ -85,15 +86,7 @@ class PatcherTest extends TestCase
 
     public static function dataApply(): array
     {
-        $exampleHandler = new class() {
-            public function addItem()
-            {
-            }
-
-            public function removeItem()
-            {
-            }
-        };
+        $exampleHandler = static::getExampleHandler();
         $exampleSubject = new \stdClass();
         $jsons = [
             '[{"op":"add","path":"/items","value":{"foo":"bar"},{"op":"reomve","path":"/items/123"]',
@@ -159,5 +152,128 @@ class PatcherTest extends TestCase
         }
 
         return $items;
+    }
+
+    /**
+     * @dataProvider      dataApplyWhenNotMatched
+     * @expectedException \Holokron\JsonPatch\Exception\NotMatchedException
+     */
+    public function testApplyWhenNotMatchedAndIgnoredNotMatchedIsFalse(string $json, $subject, array $document, array $patches, array $exceptions)
+    {
+        $this
+            ->mockMethod($this->parser, 'parse', $this->once(), [$json], $document)
+            ->mockMethod(
+                $this->matcher,
+                'match',
+                $this->once(),
+                array_shift($patches),
+                array_shift($exceptions)
+            )
+            ->mockMethod(
+                $this->executor,
+                'execute',
+                $this->never()
+            );
+
+        $this->patcher->apply($json, $subject);
+    }
+
+    /**
+     * @dataProvider dataApplyWhenNotMatched
+     */
+    public function testApplyWhenNotMatchedAndIgnoredNotMatchedIsTrue(string $json, $subject, array $document, array $patches, array $exceptions)
+    {
+        $this
+            ->mockMethod($this->parser, 'parse', $this->once(), [$json], $document)
+            ->mockMethodConsecutive(
+                $this->matcher,
+                'match',
+                $this->exactly(count($patches)),
+                $patches,
+                $exceptions
+            )
+            ->mockMethod(
+                $this->executor,
+                'execute',
+                $this->never()
+            );
+
+        $this->patcher->apply($json, $subject, true);
+    }
+
+    public static function dataApplyWhenNotMatched(): array
+    {
+        $exampleHandler = static::getExampleHandler();
+        $exampleSubject = new \stdClass();
+        $jsons = [
+            '[{"op":"add","path":"/items","value":{"foo":"bar"},{"op":"reomve","path":"/items/123"]',
+        ];
+        $subjects = [
+            $exampleSubject,
+        ];
+        $documents = [
+            [
+                [
+                    'op' => 'add',
+                    'path' => '/items',
+                    'value' => [
+                        'foo' => 'bar',
+                    ],
+                ],
+                [
+                    'op' => 'remove',
+                    'path' => '/items/123',
+                ],
+            ],
+        ];
+        $matches = [
+            [
+                [
+                    [$exampleHandler, 'addItem'],
+                    [],
+                ],
+                [
+                    [$exampleHandler, 'removeItem'],
+                    [123],
+                ],
+            ],
+        ];
+
+        $items = [];
+
+        foreach ($jsons as $key => $json) {
+            $items[] = [
+                $json,
+                $subjects[$key],
+                $documents[$key],
+                array_map(
+                    function (array $doc) {
+                        return Patch::create($doc);
+                    },
+                    $documents[$key]
+                ),
+                array_map(
+                    function (array $doc) {
+                        return new NotMatchedException(Patch::create($doc));
+                    },
+                    $documents[$key]
+                ),
+            ];
+        }
+
+        return $items;
+    }
+
+    private static function getExampleHandler()
+    {
+        return new class() {
+            public function addItem()
+            {
+            }
+
+            public function removeItem()
+            {
+            }
+        };
     }
 }
