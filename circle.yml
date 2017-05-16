@@ -11,6 +11,6 @@ test:
     override:
         - mkdir -p $CIRCLE_TEST_REPORTS/phpunit
         - mkdir -p $CIRCLE_ARTIFACTS/reports
-        - phpunit --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml --coverage-html=$CIRCLE_ARTIFACTS/reports/coverage
+        - vendor/bin/phpunit --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml --coverage-html=$CIRCLE_ARTIFACTS/reports/coverage
         - vendor/bin/phpmetrics --report-html=$CIRCLE_ARTIFACTS/reports/metrics --offline --template-title="JSON Patch" src/
         - vendor/bin/phpstan analyse --level=4 --no-progress src
