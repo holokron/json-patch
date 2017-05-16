@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Holokron\JsonPatch;
 
+use Holokron\JsonPatch\Exception\InvalidPatchException;
+
 /**
  * @author Michał Tęczyński <michalv8@gmail.com>
  */
@@ -18,6 +20,24 @@ class Patch
     const MOVE = 'move';
     const COPY = 'copy';
     const TEST = 'test';
+
+    const OP = [
+        self::ADD,
+        self::REMOVE,
+        self::REPLACE,
+        self::MOVE,
+        self::COPY,
+        self::TEST,
+    ];
+
+    const PROPERTIES = [
+        self::ADD => ['op', 'path', 'value'],
+        self::REMOVE => ['op', 'path'],
+        self::REPLACE => ['op', 'path', 'value'],
+        self::MOVE => ['op', 'path', 'from'],
+        self::COPY => ['op', 'path', 'from'],
+        self::TEST => ['op', 'path', 'value'],
+    ];
 
     /**
      * @var string
@@ -39,12 +59,12 @@ class Patch
      */
     private $from;
 
-    public function __construct(string $op, string $path, $value = null, $from = null)
+    public function __construct(array $patch)
     {
-        $this->op = $op;
-        $this->path = $path;
-        $this->value = $value;
-        $this->from = $from;
+        static::validate($patch);
+        foreach ($patch as $key => $value) {
+            $this->$key = $value;
+        }
     }
 
     /**
@@ -79,13 +99,19 @@ class Patch
         return $this->from;
     }
 
+    private static function validate(array $patch)
+    {
+        if (!isset($patch['op']) || !in_array($patch['op'], static::OP, true)) {
+            throw new InvalidPatchException($patch);
+        }
+
+        if (static::PROPERTIES[$patch['op']] !== array_intersect(static::PROPERTIES[$patch['op']], array_keys($patch))) {
+            throw new InvalidPatchException($patch);
+        }
+    }
+
     public static function create(array $patch): Patch
     {
-        return new static(
-            $patch['op'],
-            $patch['path'],
-            $patch['value'] ?? null,
-            $patch['from'] ?? null
-        );
+        return new static($patch);
     }
 }
