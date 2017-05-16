@@ -22,12 +22,7 @@ class Compiler
     /**
      * @var string
      */
-    const REQUIREMENT_START = '{';
-
-    /**
-     * @var string
-     */
-    const REQUIREMENT_END = '}';
+    const REQUIREMENT_START = ':';
 
     /**
      * @var string
@@ -39,45 +34,27 @@ class Compiler
         $path = $definition->getPath();
         $requirements = $definition->getRequirements();
 
-        return new CompiledDefinition(
-            $definition->getOp(),
-            static::generateRegex($path, $requirements),
-            $definition->getCallback(),
-            static::orderRequirements($path, $requirements)
-        );
-    }
-
-    private static function orderRequirements(string $path, array $requirements): array
-    {
-        $orderedKeys = [];
-        foreach (array_keys($requirements) as $key) {
-            $orderedKeys[$key] = strpos($path, $key);
-        }
-
-        asort($orderedKeys);
-
-        $orderedRequirements = [];
-        foreach ($orderedKeys as $key => $value) {
-            $orderedRequirements[$key] = $requirements[$key];
-        }
-
-        return $orderedRequirements;
-    }
-
-    private static function generateRegex(string $path, array $requirements): string
-    {
         $regexParts = [];
+        $compiledRequirements = [];
         $tokens = explode(static::DELIMITER, trim($path, '/'));
         foreach ($tokens as $token) {
             if (0 === strpos($token, static::REQUIREMENT_START)) {
-                $key = trim($token, '{}');
-                $regexParts[] = static::DELIMITER_REGEX;
-                $regexParts[] = '(' . (array_key_exists($key, $requirements) ? $requirements[$key] : static::DEFAULT_REQUIREMENT_REGEX) . ')';
+                $key = trim($token, ': ');
+                $requirementRegex = (array_key_exists($key, $requirements) ? $requirements[$key] : static::DEFAULT_REQUIREMENT_REGEX);
+                $compiledRequirements[$key] = $requirementRegex;
+                $regexParts[] = static::DELIMITER_REGEX . '(' . $requirementRegex . ')';
             } else {
                 $regexParts[] = static::DELIMITER_REGEX . $token;
             }
         }
 
-        return '/^' . implode('', $regexParts) . '$/';
+        $regex = '/^' . implode('', $regexParts) . '$/';
+
+        return new CompiledDefinition(
+            $definition->getOp(),
+            $regex,
+            $definition->getCallback(),
+            $compiledRequirements
+        );
     }
 }

@@ -29,7 +29,7 @@ trait MockTrait
 
         if (is_callable($return) && null === $args) {
             $expects->will($this->returnCallback($return));
-        } elseif (is_array($args)) {
+        } else {
             $expects->with(...$args);
             if ($return instanceof \Throwable) {
                 $expects->will($this->throwException($return));
