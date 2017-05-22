@@ -45,7 +45,7 @@ class Definition
     {
         static::validate($op, $path);
         $this->op = $op;
-        $this->path = $path;
+        $this->setPath($path);
         $this->callback = $callback;
     }
 
@@ -95,7 +95,7 @@ class Definition
                 throw new InvalidRequirementNameException('Requirement name consist illegal characters.');
             }
 
-            $this->requirements[$key] = $this->sanitizeRequirement($regex);
+            $this->requirements[$key] = static::sanitizeRequirement($regex);
         }
         $this->compiled = null;
 
@@ -111,15 +111,9 @@ class Definition
         return $this->compiled;
     }
 
-    private function sanitizeRequirement(string $regex): string
+    private static function sanitizeRequirement(string $regex): string
     {
-        $sanitized = $regex;
-        if ('' !== $regex && '^' === $regex[0]) {
-            $sanitized = (string) substr($regex, 1);
-        }
-        if ('$' === substr($sanitized, -1)) {
-            $sanitized = substr($sanitized, 0, -1);
-        }
+        $sanitized = trim($regex, '^$');
         if ('' === $sanitized) {
             throw new InvalidRegexException($regex);
         }
