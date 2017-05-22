@@ -9,7 +9,7 @@ use Holokron\JsonPatch\Exception\NotMatchedException;
 use Holokron\JsonPatch\Patch;
 
 /**
- * @author Michał Tęczyński <michalv8@gmail.com>
+ * @author Michał Tęczyński <michal.teczynski@gmail.com>
  */
 class Matcher implements MatcherInterface
 {

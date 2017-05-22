@@ -7,7 +7,7 @@ namespace Holokron\JsonPatch\Parser;
 use Holokron\JsonPatch\Exception\ParseException;
 
 /**
- * @author Michał Tęczyński <michalv8@gmail.com>
+ * @author Michał Tęczyński <michal.teczynski@gmail.com>
  */
 class JsonDecodeParser implements ParserInterface
 {

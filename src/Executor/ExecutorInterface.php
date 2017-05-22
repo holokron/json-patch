@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Holokron\JsonPatch\Executor;
 
 /**
- * @author Michał Tęczyński <michalv8@gmail.com>
+ * @author Michał Tęczyński <michal.teczynski@gmail.com>
  */
 interface ExecutorInterface
 {

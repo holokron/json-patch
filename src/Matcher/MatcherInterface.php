@@ -7,7 +7,7 @@ namespace Holokron\JsonPatch\Matcher;
 use Holokron\JsonPatch\Patch;
 
 /**
- * @author Michał Tęczyński <michalv8@gmail.com>
+ * @author Michał Tęczyński <michal.teczynski@gmail.com>
  */
 interface MatcherInterface
 {

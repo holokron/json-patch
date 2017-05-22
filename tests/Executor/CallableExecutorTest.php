@@ -8,7 +8,7 @@ use Holokron\JsonPatch\Executor\CallableExecutor;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author Michał Tęczyński <michalv8@gmail.com>
+ * @author Michał Tęczyński <michal.teczynski@gmail.com>
  */
 class CallableExecutorTest extends TestCase
 {

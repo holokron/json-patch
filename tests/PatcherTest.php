@@ -14,7 +14,7 @@ use Holokron\JsonPatch\Tests\Traits\MockTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author Michał Tęczyński <michalv8@gmail.com>
+ * @author Michał Tęczyński <michal.teczynski@gmail.com>
  */
 class PatcherTest extends TestCase
 {

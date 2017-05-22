@@ -8,7 +8,7 @@ use Holokron\JsonPatch\Parser\JsonDecodeParser;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author Michał Tęczyński <michalv8@gmail.com>
+ * @author Michał Tęczyński <michal.teczynski@gmail.com>
  */
 class JsonDecodeParserTest extends TestCase
 {

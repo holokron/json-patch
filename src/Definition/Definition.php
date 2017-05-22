@@ -10,7 +10,7 @@ use Holokron\JsonPatch\Exception\InvalidRequirementNameException;
 use Holokron\JsonPatch\Exception\UndefinedOpException;
 
 /**
- * @author Michał Tęczyński <michalv8@gmail.com>
+ * @author Michał Tęczyński <michal.teczynski@gmail.com>
  */
 class Definition
 {

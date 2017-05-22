@@ -10,7 +10,7 @@ use Holokron\JsonPatch\Matcher\MatcherInterface;
 use Holokron\JsonPatch\Parser\ParserInterface;
 
 /**
- * @author Michał Tęczyński <michalv8@gmail.com>
+ * @author Michał Tęczyński <michal.teczynski@gmail.com>
  */
 class Patcher
 {
