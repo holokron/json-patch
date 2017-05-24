@@ -53,6 +53,9 @@ class DefinitionsCollection implements \IteratorAggregate, \Countable
         return $this->definitions;
     }
 
+    /**
+     * @return Definition|null
+     */
     public function get($name)
     {
         return isset($this->definitions[$name]) ? $this->definitions[$name] : null;

@@ -40,7 +40,7 @@ class Patcher
     }
 
     /**
-     * @param string|array $json JSON string with patchs to apply
+     * @param string|array $json JSON string with patches to apply
      */
     public function apply($json, $subject = null, bool $ignoreNotMatched = false)
     {
@@ -57,7 +57,6 @@ class Patcher
         }
 
         $toExecute = [];
-
         foreach ($document as $jsonPatch) {
             $patch = Patch::create($jsonPatch);
             try {

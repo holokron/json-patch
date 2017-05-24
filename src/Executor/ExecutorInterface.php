@@ -9,5 +9,8 @@ namespace Holokron\JsonPatch\Executor;
  */
 interface ExecutorInterface
 {
+    /**
+     * @return mixed
+     */
     public function execute(callable $callback, array $params = [], $subject = null, $value = null);
 }

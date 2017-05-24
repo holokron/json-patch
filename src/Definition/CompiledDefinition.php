@@ -27,7 +27,7 @@ class CompiledDefinition
     /**
      * @var array
      */
-    private $requirements = [];
+    private $requirements;
 
     public function __construct(string $op, string $regex, callable $callback, array $requirements = [])
     {

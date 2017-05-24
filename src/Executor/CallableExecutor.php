@@ -9,6 +9,9 @@ namespace Holokron\JsonPatch\Executor;
  */
 class CallableExecutor implements ExecutorInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function execute(callable $callback, array $params = [], $subject = null, $value = null)
     {
         if (null !== $subject) {
