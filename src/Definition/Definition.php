@@ -127,7 +127,7 @@ class Definition
             throw new UndefinedOpException($op);
         }
 
-        if (preg_match('[^\d\w\\\/\-\.]', $path)) {
+        if (preg_match('/[^\d\w\/\-\.\:]/', $path)) {
             throw new IllegalPathCharactersException($path);
         }
     }

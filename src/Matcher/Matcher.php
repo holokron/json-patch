@@ -41,6 +41,7 @@ class Matcher implements MatcherInterface
                 continue;
             }
             $compiledDef = $definition->compile();
+
             if (!preg_match($compiledDef->getRegex(), $patch->getPath(), $params)) {
                 continue;
             }

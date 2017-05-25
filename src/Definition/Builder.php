@@ -10,12 +10,12 @@ namespace Holokron\JsonPatch\Definition;
 class Builder
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $op;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $path;
 
@@ -25,7 +25,7 @@ class Builder
     private $requirements = [];
 
     /**
-     * @var callable
+     * @var callable|null
      */
     private $callback;
 
