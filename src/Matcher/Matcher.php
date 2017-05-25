@@ -18,9 +18,16 @@ class Matcher implements MatcherInterface
      */
     private $definitions;
 
-    public function __construct(DefinitionsCollection $definitions)
+    public function __construct(DefinitionsCollection $definitions = null)
+    {
+        $this->definitions = $definitions ?: new DefinitionsCollection();
+    }
+
+    public function setDefinitions(DefinitionsCollection $definitions): self
     {
         $this->definitions = $definitions;
+
+        return $this;
     }
 
     /**
@@ -34,7 +41,6 @@ class Matcher implements MatcherInterface
                 continue;
             }
             $compiledDef = $definition->compile();
-
             if (!preg_match($compiledDef->getRegex(), $patch->getPath(), $params)) {
                 continue;
             }
