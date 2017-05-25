@@ -13,4 +13,6 @@ pipelines:
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
           - composer --version
           - composer install --prefer-dist --no-scripts --no-progress
-          - vendor/bin/phpunit
+          - bin/cs-fix
+          - bin/analyse
+          - bin/test
