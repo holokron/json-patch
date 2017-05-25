@@ -13,6 +13,6 @@ pipelines:
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
           - composer --version
           - composer install --prefer-dist --no-scripts --no-progress
-          - vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no --path-mode=intersection
+          - vendor/bin/php-cs-fixer fix --config=.php_cs -v --dry-run --stop-on-violation --using-cache=no --path-mode=intersection --diff
           - vendor/bin/phpstan analyse --level=4 --no-progress src
           - vendor/bin/phpunit
