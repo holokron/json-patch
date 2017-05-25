@@ -34,12 +34,82 @@ class DefinitionTest extends TestCase
         $callback = function () {};
 
         return [
-            [['add', '/users', $callback], [], 'add', '/users', $callback, []],
-            [['remove', '/users/:userId', $callback], ['userId' => '\d+'], 'remove', '/users/:userId', $callback, ['userId' => '\d+']],
-            [['replace', '/users/:userId/posts', $callback], ['userId' => '\w+'], 'replace', '/users/:userId/posts', $callback, ['userId' => '\w+']],
-            [['move', '/users/:userId/posts/:postId', $callback], ['userId' => '\w+', 'postId' => '\d+'], 'move', '/users/:userId/posts/:postId', $callback, ['userId' => '\w+', 'postId' => '\d+']],
-            [['copy', '/users/:userId/posts/:postId/comments', $callback], ['userId' => '\w+', 'postId' => '\d+'], 'copy', '/users/:userId/posts/:postId/comments', $callback, ['userId' => '\w+', 'postId' => '\d+']],
-            [['test', '/users/:userId/posts/:postId/comments/:commentId', $callback], ['userId' => '\w+', 'postId' => '\d+', 'commentId' => '[\d\w]+'], 'test', '/users/:userId/posts/:postId/comments/:commentId', $callback, ['userId' => '\w+', 'postId' => '\d+', 'commentId' => '[\d\w]+']],
+            [
+                ['add', '/users', $callback],
+                [],
+                'add',
+                '/users',
+                $callback,
+                [],
+            ],
+            [
+                ['remove', '/users/:userId', $callback],
+                [
+                    'userId' => '\d+',
+                ],
+                'remove',
+                '/users/:userId',
+                $callback,
+                [
+                    'userId' => '\d+',
+                ],
+            ],
+            [
+                ['replace', '/users/:userId/posts', $callback],
+                [
+                    'userId' => '\w+',
+                ],
+                'replace',
+                '/users/:userId/posts',
+                $callback,
+                [
+                    'userId' => '\w+',
+                ],
+            ],
+            [
+                ['move', '/users/:userId/posts/:postId', $callback],
+                [
+                    'userId' => '\w+',
+                    'postId' => '\d+',
+                ],
+                'move',
+                '/users/:userId/posts/:postId',
+                $callback,
+                [
+                    'userId' => '\w+',
+                    'postId' => '\d+',
+                ],
+            ],
+            [
+                ['copy', '/users/:userId/posts/:postId/comments', $callback],
+                [
+                    'userId' => '\w+',
+                    'postId' => '\d+',
+                ],
+                'copy',
+                '/users/:userId/posts/:postId/comments',
+                $callback,
+                [
+                    'userId' => '\w+',
+                    'postId' => '\d+',
+                ],
+            ],
+            [
+                ['test', '/users/:userId/posts/:postId/comments/:commentId', $callback],
+                [
+                    'userId' => '\w+',
+                    'postId' => '\d+',
+                    'commentId' => '[\d\w]+',
+                ],
+                'test',
+                '/users/:userId/posts/:postId/comments/:commentId',
+                $callback,
+                [
+                    'userId' => '\w+',
+                    'postId' => '\d+',
+                    'commentId' => '[\d\w]+',
+                ],
+            ],
         ];
     }
 
@@ -88,16 +158,4 @@ class DefinitionTest extends TestCase
             ['test', '|users,:userId&posts):postId"comments;:commentId', $callback],
         ];
     }
-
-    /*
-    public function testDefinitionWhenRequirementHasInvalidName(array $args, array $requirements = [])
-    {
-
-    }
-
-    public function testDefinitionWhenRequirementHasInvalidRegex(array $args, array $requirements = [])
-    {
-
-    }
-    */
 }
