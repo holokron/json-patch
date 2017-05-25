@@ -1,0 +1,3 @@
+#!/bin/bash
+
+vendor/bin/phpstan analyse --level=4 --no-progress src
