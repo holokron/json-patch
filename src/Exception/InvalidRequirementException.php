@@ -7,6 +7,6 @@ namespace Holokron\JsonPatch\Exception;
 /**
  * @author Michał Tęczyński <michal.teczynski@gmail.com>
  */
-class InvalidRequirementNameException extends \RuntimeException
+class InvalidRequirementException extends \RuntimeException
 {
 }

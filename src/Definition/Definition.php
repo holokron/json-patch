@@ -6,7 +6,7 @@ namespace Holokron\JsonPatch\Definition;
 
 use Holokron\JsonPatch\Exception\IllegalPathCharactersException;
 use Holokron\JsonPatch\Exception\InvalidRegexException;
-use Holokron\JsonPatch\Exception\InvalidRequirementNameException;
+use Holokron\JsonPatch\Exception\InvalidRequirementException;
 use Holokron\JsonPatch\Exception\UndefinedOpException;
 
 /**
@@ -87,12 +87,12 @@ class Definition
     public function addRequirements(array $requirements): self
     {
         foreach ($requirements as $key => $regex) {
-            if (is_int($key[0])) {
-                throw new InvalidRequirementNameException('Beginning of requirement name cannot be integer.');
+            if (is_numeric($key[0])) {
+                throw new InvalidRequirementException('Beginning of requirement name cannot be integer.');
             }
 
             if (!preg_match('/^' . static::PATH_REQUIREMENT_ALLOWED_CHARACTERS . '+$/', $key)) {
-                throw new InvalidRequirementNameException('Requirement name consist illegal characters.');
+                throw new InvalidRequirementException('Requirement name consist illegal characters.');
             }
 
             $this->requirements[$key] = static::sanitizeRequirement($regex);
