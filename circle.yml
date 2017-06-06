@@ -13,8 +13,9 @@ general:
 test:
     pre:
         - mkdir -p reports
+        - mkdir -p $CIRCLE_TEST_REPORTS/phpunit
     override:
         - vendor/bin/php-cs-fixer fix --config=.php_cs -v --dry-run --stop-on-violation --using-cache=no --path-mode=intersection --diff
         - vendor/bin/phpstan analyse --level=4 --no-progress src
-        - vendor/bin/phpunit --log-junit reports/junit.xml --coverage-html=reports/coverage && cp reports/junit.xml $CIRCLE_TEST_REPORTS/phpunit/junit.xml
+        - vendor/bin/phpunit --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml --coverage-html=reports/coverage
         - vendor/bin/phpmetrics --report-html=reports/metrics --offline --template-title="JSON Patch PHP metrics" src/
