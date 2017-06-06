@@ -19,10 +19,11 @@
         "php": ">=7.0.0"
     },
     "require-dev": {        
-        "phpunit/phpunit": "~6.0",
+        "phpunit/phpunit": "^6.0",
         "friendsofphp/php-cs-fixer": "~2.3",
         "phpstan/phpstan": "^0.6.4",
-        "phpmetrics/phpmetrics": "^2.2.0"
+        "phpmetrics/phpmetrics": "^2.2.0",
+        "michalv8/xpmock": "^1.2"
     },
     "autoload": {
         "psr-4": {
@@ -34,5 +35,5 @@
             "Holokron\\JsonPatch\\Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
