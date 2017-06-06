@@ -112,7 +112,6 @@ class PatchTest extends TestCase
     public function testCreateWhenInvalidPatchGiven(array $data)
     {
         $patch = Patch::create($data);
-        var_dump($patch);
     }
 
     public static function dataCreateWhenInvalidPatchGiven(): array

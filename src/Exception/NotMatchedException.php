@@ -18,7 +18,7 @@ class NotMatchedException extends \RuntimeException
 
     public function __construct(Patch $patch)
     {
-        parent::__construct("Not matched operation at path: {$patch->getPath()}.");
+        parent::__construct("Not matched operation at path: {$patch->getOp()} {$patch->getPath()}.");
         $this->patch = $patch;
     }
 

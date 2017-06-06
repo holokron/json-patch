@@ -29,8 +29,7 @@ class FactoryTest extends TestCase
             ->setParser($expectedParser)
             ->setMatcher($expectedMatcher)
             ->setExecutor($expectedExecutor)
-            ->create()
-            ;
+            ->create();
 
         $reflection = new \ReflectionClass($patcher);
         $parser = $reflection->getProperty('parser');

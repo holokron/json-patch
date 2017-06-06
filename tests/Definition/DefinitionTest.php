@@ -170,7 +170,7 @@ class DefinitionTest extends TestCase
      */
     public function testDefinitionWhenRequirementIsInvalid(array $requirements)
     {
-        $definition = new Definition('add', '/foo/bar', function() {});
+        $definition = new Definition('add', '/foo/bar', function () {});
         $definition->addRequirements($requirements);
     }
 
@@ -179,18 +179,18 @@ class DefinitionTest extends TestCase
         return [
             [
                 [
-                    '123test' => '\d+'
-                ]
+                    '123test' => '\d+',
+                ],
             ],
             [
                 [
                     '{test%' => '\w+',
-                ]
+                ],
             ],
             [
                 [
                     '\foo\\bar\\123' => '',
-                ]
+                ],
             ],
         ];
     }
@@ -201,7 +201,7 @@ class DefinitionTest extends TestCase
      */
     public function testDefinitionWhenInvalidRegexInRequirementIsGiven(string $regex)
     {
-        $definition = new Definition('add', '/foo/bar', function() {});
+        $definition = new Definition('add', '/foo/bar', function () {});
         $definition->addRequirements([
             'foo' => $regex,
         ]);
